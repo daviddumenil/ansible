@@ -8,7 +8,7 @@ jobs:
           version: 17.09.0-ce
       - checkout
       - run: echo "A first hello"
-      - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           command: curl --silent "https://api.github.com/repos/ansible/ansible/tags" | jq ".[] | .name" | tr -d '"' |  cut -c 2- | grep --only-matching '^[0-9\.]*' | awk NF | sort |uniq > /tmp/releases
       - run: echo `cat /tmp/releases`
