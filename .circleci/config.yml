@@ -2,12 +2,11 @@ version: 2
 jobs:
   build:
     docker:
-      - image: busybox
+      - image: circleci/python:3.6.5-node-browsers 
     steps:
       - setup_remote_docker:
           version: 17.09.0-ce
       - checkout
-      - run: echo "A first hello"
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           command: curl --silent "https://api.github.com/repos/ansible/ansible/tags" | jq ".[] | .name" | tr -d '"' |  cut -c 2- | grep --only-matching '^[0-9\.]*' | awk NF | sort |uniq > /tmp/releases
