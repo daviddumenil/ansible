@@ -6,3 +6,6 @@ jobs:
     steps:
       - checkout
       - run: echo "A first hello"
+      - run: echo "A first hello"
+      - run:
+          command: docker build --build-arg BUILD_WITH_ANSIBLE_VERSION=2.4.1 .      
