@@ -16,5 +16,5 @@ jobs:
       - run: |
            cat /tmp/releases | while read release
            do
-             docker build --tag daviddumenil/ansible-ci:$release --build-arg BUILD_WITH_ANSIBLE_VERSION=$release . && docker push daviddumenil/ansible-ci:$release
+             docker build --tag daviddumenil/ansible:$release --build-arg BUILD_WITH_ANSIBLE_VERSION=$release . && docker push daviddumenil/ansible:$release
            done
