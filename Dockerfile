@@ -21,7 +21,7 @@ RUN echo "===> Installing python, sudo, rsync and supporting tools..."  && \
     \
     \
     echo "===> Installing handy tools (not absolutely required)..."  && \
-    apt-get install -y sshpass openssh-client  && \
+    apt-get install -y sshpass openssh-client jq  && \
     \
     \
     echo "===> Removing unused APT resources..."                  && \
