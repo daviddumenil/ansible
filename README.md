@@ -1,3 +1,2 @@
-# ansible-ci
-An Ansible container focused on CI pipelines
-
+# ansible
+An Ansible container versioned by Ansible release. Handy for CI Pipelines.
