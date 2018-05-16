@@ -9,12 +9,11 @@ jobs:
       - checkout
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
-          command: curl --silent "https://api.github.com/repos/ansible/ansible/tags" | jq ".[] | .name" | tr -d '"' |  cut -c 2- | grep --only-matching '^[0-9\.]*' | awk NF | sort |uniq > /tmp/releases
+          command: curl --silent "https://api.github.com/repos/ansible/ansible/tags" | jq ".[] | .name" | tr -d '"' |  cut -c 2- | grep '^[0-9\.\-]*$' | cut -f 1 -d"-" > /tmp/releases 
       - run: echo `cat /tmp/releases`
-      - run:
-          command: docker build --build-arg BUILD_WITH_ANSIBLE_VERSION=2.4.1 .      
       - run: |
            cat /tmp/releases | while read release
            do
-             docker build --tag daviddumenil/ansible:$release --build-arg BUILD_WITH_ANSIBLE_VERSION=$release . && docker push daviddumenil/ansible:$release
+             docker build --tag daviddumenil/ansible:$release --build-arg BUILD_WITH_ANSIBLE_VERSION=$release . 
+             docker push daviddumenil/ansible:$release
            done
