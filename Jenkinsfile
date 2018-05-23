@@ -16,15 +16,21 @@ pipeline {
 
   stages {
     stage('Build') {
-      sh 'docker build .'
+      steps {
+        sh 'docker build .'
+      }
     }
    
    stage('Tag') {
-      sh 'docker build .'
+      steps {
+        sh 'docker build .'
+      }
     }
 
     stage('Push') {
-      //sh 'docker push '
+      steps {
+        sh 'docker push '
+      }
     }
 
   }
