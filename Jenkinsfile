@@ -15,8 +15,17 @@ pipeline {
 
   stages {
     stage('Run') {
-      steps {
-        sh 'docker run --name nginx1 -d -p 8090:80 nginx'
+      parrallel {
+        stage('Run App1') {
+          steps {
+            sh 'docker run --name nginx1 -d -p 8091:80 nginx'
+          }
+        }
+        stage('Run App2') {
+          steps {
+            sh 'docker run --name nginx2 -d -p 8092:80 nginx'
+          }
+        }
       }
     }
    
@@ -43,12 +52,15 @@ pipeline {
   post {
       success {
         sh 'docker stop nginx1'
+        sh 'docker stop nginx2
       }
       failure {
         sh 'docker stop nginx1'
+        sh 'docker stop nginx2'
       }
       aborted {
         sh 'docker stop nginx1'
+        sh 'docker stop nginx2'
       }
   }
 
