@@ -37,18 +37,18 @@ pipeline {
       }
     }
 
-    
-    post {
-        success {
-            sh 'docker stop nginx1'
-        }
-        failure {
-            sh 'docker stop nginx1'
-        }
-        aborted {
-            sh 'docker stop nginx1'
-        }
-    }
-    
   }
+  
+  post {
+      success {
+        sh 'docker stop nginx1'
+      }
+      failure {
+        sh 'docker stop nginx1'
+      }
+      aborted {
+        sh 'docker stop nginx1'
+      }
+  }
+
 }
