@@ -21,7 +21,7 @@ pipeline {
    
    stage('Test') {
       steps {
-        sh 'curl http://localhost:8090/'
+        sh 'curl --fail http://localhost:8090/'
       }
     }
 
