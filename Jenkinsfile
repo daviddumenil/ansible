@@ -4,6 +4,7 @@ pipeline {
   }
 
   environment {
+    CHOICE = ''
   }
 
   options {
