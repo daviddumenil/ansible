@@ -4,8 +4,6 @@ pipeline {
   }
 
   environment {
-    // feature toggles are here
-    runCDSDARContainerBuild = 'true'
   }
 
   options {
@@ -15,19 +13,25 @@ pipeline {
   }
 
   stages {
-    stage('Build') {
+    stage('Run') {
       steps {
-        sh 'docker build .'
+        sh 'docker run --name nginx -d -p 8090:80 nginx'
       }
     }
    
-   stage('Tag') {
+   stage('Test') {
       steps {
-        sh 'docker build .'
+        sh 'curl http://localhost:8090/'
       }
     }
 
-    stage('Push') {
+    stage('Query') {
+      steps {
+        sh 'docker push '
+      }
+    }
+
+    stage('Verify') {
       steps {
         sh 'docker push '
       }
