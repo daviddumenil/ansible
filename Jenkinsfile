@@ -30,11 +30,34 @@ pipeline {
     }
    
    stage('Test') {
-      steps {
-        sh 'curl --fail http://localhost:8090/'
+      parrallel {
+        stage('Test App1') {
+          steps {
+            sh 'curl --fail http://localhost:8091/'
+          }
+        }
+        stage('Test App2') {
+          steps {
+            sh 'curl --fail http://localhost:8092/'
+          }
+        }
       }
     }
 
+    stage('Query') {
+      input {
+        message "Should we continue?"
+        ok "Yes, we should."
+        submitter "alice,bob"
+        parameters {
+          string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+        }
+      }
+      steps {
+        echo "Hello, ${PERSON}, nice to meet you."
+      }
+    }
+    
     stage('Query') {
       steps {
         sh 'docker push '
