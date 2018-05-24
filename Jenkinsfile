@@ -79,16 +79,16 @@ pipeline {
   
   post {
       success {
-        sh 'docker stop nginx1'
-        sh 'docker stop nginx2'
+        sh 'docker rm -f nginx1'
+        sh 'docker rm -f  nginx2'
       }
       failure {
-        sh 'docker stop nginx1'
-        sh 'docker stop nginx2'
+        sh 'docker rm -f  nginx1'
+        sh 'docker rm -f  nginx2'
       }
       aborted {
-        sh 'docker stop nginx1'
-        sh 'docker stop nginx2'
+        sh 'docker rm -f  nginx1'
+        sh 'docker rm -f  nginx2'
       }
   }
 
