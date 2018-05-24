@@ -15,7 +15,7 @@ pipeline {
 
   stages {
     stage('Run') {
-      parrallel {
+      parallel {
         stage('Run App1') {
           steps {
             sh 'docker run --name nginx1 -d -p 8091:80 nginx'
