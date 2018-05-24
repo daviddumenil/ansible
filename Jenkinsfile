@@ -46,27 +46,31 @@ pipeline {
 
     stage('Query') {
       input {
-        message "Should we continue?"
+        message "Which app should be shut down?"
         ok "Yes, we should."
         submitter "alice,bob"
         parameters {
-          string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+          string(name: 'SHUTDOWN_CHOICE', defaultValue: 'both', description: 'Can be one of: app1 app2 both none')
         }
       }
       steps {
-        echo "Hello, ${PERSON}, nice to meet you."
+        echo "Shutdown choice is, ${SHUTDOWN_CHOICE}"
       }
     }
     
-    stage('Query') {
-      steps {
-        sh 'docker push '
-      }
+    stage('Shutdown') {
+      when {
+         environment name: 'SHUTDOWN_CHOICE', value: 'both'
+            }
+            steps {
+              sh 'docker stop nginx2'
+              sh 'docker stop nginx2'
+            }
     }
 
     stage('Verify') {
       steps {
-        sh 'docker push '
+        sh ''
       }
     }
 
@@ -75,7 +79,7 @@ pipeline {
   post {
       success {
         sh 'docker stop nginx1'
-        sh 'docker stop nginx2
+        sh 'docker stop nginx2'
       }
       failure {
         sh 'docker stop nginx1'
