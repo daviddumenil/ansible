@@ -48,7 +48,6 @@ pipeline {
       input {
         message "Which app should be shut down?"
         ok "Yes, we should."
-        submitter "alice,bob"
         parameters {
           string(name: 'SHUTDOWN_CHOICE', defaultValue: 'both', description: 'Can be one of: app1 app2 both none')
         }
