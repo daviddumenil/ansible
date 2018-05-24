@@ -30,7 +30,7 @@ pipeline {
     }
    
    stage('Test') {
-      parrallel {
+      parallel {
         stage('Test App1') {
           steps {
             sh 'curl --fail http://localhost:8091/'
@@ -66,6 +66,7 @@ pipeline {
               sh 'docker stop nginx2'
               sh 'docker stop nginx2'
             }
+      
     }
 
     stage('Verify') {
