@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
-          command: curl --silent "https://api.github.com/repos/ansible/ansible/tags" | jq ".[] | .name" | tr -d '"' |  cut -c 2- | grep '^[0-9\.\-]*$' | cut -f 1 -d"-" > /tmp/releases 
+          command: curl --silent -H 'Content-Type: application/json' -H "Authorization: bearer $GITHUB_API_TOKEN" -X POST --data-binary '{"query":"{\n  repository(owner: \"ansible\", name: \"ansible\") {\n    refs(refPrefix: \"refs/tags/\", last: 3, orderBy: {field: TAG_COMMIT_DATE, direction: ASC}) {\n      edges {\n        node {\n          name\n        }\n      }\n    }\n  }\n}\n","variables":{},"operationName":null}'  https://api.github.com/graphql | jq ".[] | .[] | .[] | .[] | .[] | .[] | .name" | tr -d '"' |  cut -c 2- | grep '^[0-9\.\-]*$' | cut -f 1 -d"-" > /tmp/releases 
       - run: echo `cat /tmp/releases`
       - run: |
            cat /tmp/releases | while read release
@@ -17,3 +17,18 @@ jobs:
              docker build --tag daviddumenil/ansible:$release --build-arg BUILD_WITH_ANSIBLE_VERSION=$release . 
              docker push daviddumenil/ansible:$release
            done
+workflows:
+  version: 2
+  commit-workflow:
+    jobs:
+      - build
+  scheduled-workflow:
+    triggers:
+      - schedule:
+          cron: "0 1 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
